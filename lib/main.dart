@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tasks/ui/add_task_page.dart';
 import 'package:tasks/ui/main_page.dart';
 
 void main() {
@@ -8,7 +9,11 @@ void main() {
 }
 
 final router = GoRouter(routes: [
-  GoRoute(path: "/", name: "main", builder: (context, state) => MainPage())
+  GoRoute(path: "/", name: "main", builder: (context, state) => MainPage()),
+  GoRoute(
+      path: "/add_task",
+      name: "add",
+      builder: (context, state) => AddTaskPage())
 ]);
 
 class MyApp extends StatelessWidget {
@@ -19,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
         useMaterial3: true,
       ),
       routerConfig: router,
