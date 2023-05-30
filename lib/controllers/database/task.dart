@@ -1,20 +1,32 @@
-import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
+part 'task.g.dart';
+
+@HiveType(typeId: 1)
 class Task {
-  final String title;
-  final String description;
-  final int importance;
-  final DateTime date;
-  final IconData? icon;
-  final bool important;
+  @HiveField(0)
+  String title;
+
+  @HiveField(1)
+  String description;
+
+  @HiveField(2)
+  int importance;
+
+  @HiveField(3)
+  DateTime date;
+
+  @HiveField(4)
+  bool important;
+
+  @HiveField(5)
+  int icon;
 
   Task(
-      {required this.important,
+      {required this.title,
       required this.description,
       required this.importance,
       required this.date,
-      this.icon,
-      required this.title});
+      required this.important,
+      required this.icon});
 }
-
-class TaskAdapter extends TaskAdapter<Task> {}

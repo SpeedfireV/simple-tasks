@@ -12,6 +12,8 @@ void main() {
 
   Hive.initFlutter();
 
+  Hive.registerAdapter(TaskAdapter());
+
   var tasksBox = Hive.openBox<Task>("tasks");
 
   runApp(ProviderScope(child: const MyApp()));
