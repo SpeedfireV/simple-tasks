@@ -7,24 +7,26 @@ import 'package:tasks/ui/main_page.dart';
 
 import 'controllers/database/task.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Hive.initFlutter();
+  await Hive.initFlutter().then((value) => debugPrint("Initialized"));
 
   Hive.registerAdapter(TaskAdapter());
 
-  var tasksBox = Hive.openBox<Task>("tasks");
+  var tasksBox =
+      Hive.openBox<Task>("tasks").then((value) => debugPrint("Box opened"));
 
-  runApp(ProviderScope(child: const MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 final router = GoRouter(routes: [
-  GoRoute(path: "/", name: "main", builder: (context, state) => MainPage()),
+  GoRoute(
+      path: "/", name: "main", builder: (context, state) => const MainPage()),
   GoRoute(
       path: "/add_task",
       name: "add",
-      builder: (context, state) => AddTaskPage())
+      builder: (context, state) => const AddTaskPage())
 ]);
 
 class MyApp extends StatelessWidget {

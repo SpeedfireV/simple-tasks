@@ -17,10 +17,10 @@ class _MainPageState extends ConsumerState<MainPage> {
           onPressed: () {
             router.pushNamed("add");
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
         appBar: AppBar(
-          title: Text("Current Tasks"),
+          title: const Text("Current Tasks"),
           centerTitle: true,
           elevation: 3,
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -29,7 +29,25 @@ class _MainPageState extends ConsumerState<MainPage> {
           children: [
             ListTile(
               onTap: () {},
-              title: Text("Task"),
+              title: const Text("Task Name"),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.cancel),
+                    color: Colors.red,
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.check,
+                    ),
+                    color: Colors.green,
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             )
           ],
         ));
