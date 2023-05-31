@@ -35,12 +35,12 @@ class _MainPageState extends ConsumerState<MainPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.cancel),
+                    icon: const Icon(Icons.cancel),
                     color: Colors.red,
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.check,
                     ),
                     color: Colors.green,

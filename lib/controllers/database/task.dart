@@ -17,9 +17,6 @@ class Task {
   DateTime date;
 
   @HiveField(4)
-  bool important;
-
-  @HiveField(5)
   int icon;
 
   Task(
@@ -27,6 +24,5 @@ class Task {
       required this.description,
       required this.importance,
       required this.date,
-      required this.important,
       required this.icon});
 }
