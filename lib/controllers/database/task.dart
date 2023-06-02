@@ -8,21 +8,25 @@ class Task {
   String title;
 
   @HiveField(1)
-  String description;
+  String? description;
 
   @HiveField(2)
   int importance;
 
   @HiveField(3)
-  DateTime date;
+  DateTime? date;
 
   @HiveField(4)
-  int icon;
+  int? typeOfDate;
+
+  @HiveField(5)
+  int? category;
 
   Task(
       {required this.title,
-      required this.description,
+      this.description,
       required this.importance,
-      required this.date,
-      required this.icon});
+      this.date,
+      this.typeOfDate,
+      this.category});
 }

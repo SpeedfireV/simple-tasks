@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tasks/controllers/database/db_functions.dart';
+import 'package:tasks/controllers/state_management/task_values.dart';
 import 'package:tasks/main.dart';
+import 'package:tasks/ui/elements/task_list_tile.dart';
 
 class MainPage extends ConsumerStatefulWidget {
   const MainPage({super.key});
@@ -11,7 +14,15 @@ class MainPage extends ConsumerStatefulWidget {
 
 class _MainPageState extends ConsumerState<MainPage> {
   @override
+  void initState() {
+    super.initState();
+
+    ref.read(currentTasksProvider);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    ref.watch(currentTasksProvider.notifier);
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -27,28 +38,18 @@ class _MainPageState extends ConsumerState<MainPage> {
         ),
         body: ListView(
           children: [
-            ListTile(
-              onTap: () {},
-              title: const Text("Task Name"),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.cancel),
-                    color: Colors.red,
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.check,
-                    ),
-                    color: Colors.green,
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            )
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: tasksBox.length,
+                itemBuilder: (context, index) {
+                  debugPrint(tasksBox.length.toString());
+                  print(ref.read(currentTasksProvider.notifier).state);
+                  return ListTileTask(
+                      task:
+                          ref.read(currentTasksProvider.notifier).state[index]);
+                }),
+            SizedBox(height: 70)
           ],
         ));
   }

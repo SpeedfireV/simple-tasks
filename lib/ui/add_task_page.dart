@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tasks/controllers/state_management/add_task_values.dart';
+import 'package:tasks/controllers/database/db_functions.dart';
+import 'package:tasks/controllers/database/task.dart';
+import 'package:tasks/controllers/state_management/task_values.dart';
 import 'package:tasks/functions/date_time.dart';
 import 'package:tasks/main.dart';
 
@@ -18,6 +20,9 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
   late FocusNode focusNodeDescription;
   late FocusNode focusNodeDateHour;
   late FocusNode focusNodeCategory;
+  DateTime? dateHour;
+
+  final _formKey = GlobalKey<FormState>();
 
   final dateHourController = TextEditingController();
   final titleController = TextEditingController();
@@ -55,6 +60,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     ref.watch(importanceProvider);
     ref.watch(typeOfDateProvider);
     ref.watch(categoryProvider);
+    ref.watch(currentTasksProvider);
     return Scaffold(
       appBar: AppBar(
         elevation: 3,
@@ -68,6 +74,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
         ),
       ),
       body: Form(
+        key: _formKey,
         child: Stack(
           children: [
             ListView(
@@ -75,6 +82,13 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                 padding: const EdgeInsets.only(left: 12, right: 12, top: 16),
                 children: [
                   TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter the name';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) => _formKey.currentState!.validate(),
                     focusNode: focusNodeTitle,
                     controller: titleController,
                     decoration: InputDecoration(
@@ -245,6 +259,18 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                             );
                             if (pickedDate != null) {
                               // Set The Date
+                              if (pickedTime != null) {
+                                dateHour = DateTime(
+                                    pickedDate.year,
+                                    pickedDate.month,
+                                    pickedDate.day,
+                                    pickedTime.hour,
+                                    pickedTime.minute);
+                              } else {
+                                dateHour = DateTime(pickedDate.year,
+                                    pickedDate.month, pickedDate.day);
+                              }
+
                               dateHourController.text =
                                   formatDateTime(pickedDate, pickedTime);
                             }
@@ -369,15 +395,31 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                 child: AnimatedContainer(
                   duration: Duration.zero,
                   child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         debugPrint(dateHourController.text);
 
                         debugPrint(
                             "Titile Controller: ${titleController.text}");
                         debugPrint(
                             "Description Controller: ${descriptionController.text}");
-
-                        router.pop();
+                        if (_formKey.currentState!.validate()) {
+                          Task _currentTask = Task(
+                              title: titleController.text,
+                              description: descriptionController.text.length > 0
+                                  ? descriptionController.text
+                                  : null,
+                              importance:
+                                  ref.read(importanceProvider.notifier).state,
+                              typeOfDate:
+                                  ref.read(typeOfDateProvider.notifier).state,
+                              date: dateHour != null ? dateHour : null,
+                              category:
+                                  ref.read(categoryProvider.notifier).state);
+                          addTask(_currentTask);
+                          ref.read(currentTasksProvider.notifier).state =
+                              await getTasks();
+                          router.pop();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           minimumSize: const Size(180, 60), elevation: 3),
