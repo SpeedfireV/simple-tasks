@@ -427,10 +427,18 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                               time: time,
                               category:
                                   ref.read(categoryProvider.notifier).state);
-                          addTask(currentTask);
+
+                          if (widget.query != null) {
+                            editTask(int.parse(widget.query!), currentTask);
+                          } else {
+                            addTask(currentTask);
+                          }
                           tasksNotifier.addTasks(getTasks());
 
                           router.pop();
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Successfully added")));
                         }
                       },
                       style: ElevatedButton.styleFrom(

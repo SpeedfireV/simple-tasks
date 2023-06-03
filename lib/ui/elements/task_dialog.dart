@@ -33,9 +33,11 @@ class CancelDialog extends ConsumerWidget {
             onPressed: () {
               deleteTask(id);
               tasksNotifier.addTasks(getTasks());
+
+              router.pop();
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Successfully deleted")));
-              router.pop();
             },
             child: const Text(
               "Delete task",
