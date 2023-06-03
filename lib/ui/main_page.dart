@@ -22,7 +22,9 @@ class _MainPageState extends ConsumerState<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(currentTasksProvider.notifier);
+    final tasksNotifier = ref.watch(currentTasksProvider.notifier);
+    final tasks = ref.watch(currentTasksProvider);
+
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -40,16 +42,13 @@ class _MainPageState extends ConsumerState<MainPage> {
           children: [
             ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: tasksBox.length,
                 itemBuilder: (context, index) {
                   debugPrint(tasksBox.length.toString());
-                  print(ref.read(currentTasksProvider.notifier).state);
-                  return ListTileTask(
-                      task:
-                          ref.read(currentTasksProvider.notifier).state[index]);
+                  return ListTileTask(task: tasks[index], id: index);
                 }),
-            SizedBox(height: 70)
+            const SizedBox(height: 70)
           ],
         ));
   }

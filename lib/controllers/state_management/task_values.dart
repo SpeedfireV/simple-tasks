@@ -9,12 +9,21 @@ final categoryProvider = StateProvider.autoDispose((ref) => 0);
 
 final currentDatabaseProvider = Provider((ref) => tasksBox);
 
-final currentTasksProvider = StateProvider<List<Task>>((ref) {
+final currentTasksProvider =
+    StateNotifierProvider<TasksNotifier, List<Task>>((ref) {
   final box = ref.watch(currentDatabaseProvider);
   List<Task> _listOfTasks = [];
   for (Task element in box.values) {
     _listOfTasks.add(element);
   }
 
-  return _listOfTasks;
+  return TasksNotifier(_listOfTasks);
 });
+
+class TasksNotifier extends StateNotifier<List<Task>> {
+  TasksNotifier(List<Task> initialTasks) : super(initialTasks);
+
+  void addTasks(List<Task> task) {
+    state = task;
+  }
+}

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tasks/controllers/database/db_functions.dart';
 import 'package:tasks/controllers/database/task.dart';
 import 'package:tasks/functions/category_icon.dart';
 import 'package:tasks/functions/date_time.dart';
 
 class ListTileTask extends ConsumerStatefulWidget {
-  const ListTileTask({super.key, required this.task});
+  const ListTileTask({super.key, required this.task, required this.id});
 
   final Task task;
+  final int id;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ListTileTaskState();
@@ -24,7 +26,29 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
                   hour: widget.task.date!.hour,
                   minute: widget.task.date!.minute))
           : ""),
-      onTap: () {},
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    widget.task.category != null && widget.task.category != 0
+                        ? Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(categoryIcon(widget.task.category!)),
+                              const SizedBox(height: 8)
+                            ],
+                          )
+                        : const SizedBox(),
+                    Text(widget.task.title),
+                  ]),
+                ),
+              );
+            });
+      },
       title: Text(widget.task.title),
       leading: Row(
         mainAxisSize: MainAxisSize.min,
@@ -39,17 +63,17 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
               child: Text(
                 widget.task.importance.toString(),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
                 ),
               ),
             ),
           ),
-          widget.task.category != null
+          widget.task.category != null && widget.task.category != 0
               ? Row(
                   children: [
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Container(
                       width: 40,
                       height: 40,
@@ -57,15 +81,13 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
                           shape: BoxShape.circle,
                           color: Theme.of(context).colorScheme.inversePrimary),
                       child: Icon(
-                        widget.task.category != null
-                            ? categoryIcon(widget.task.category!)
-                            : null,
+                        categoryIcon(widget.task.category!),
                         color: Colors.black,
                       ),
                     ),
                   ],
                 )
-              : SizedBox(),
+              : const SizedBox(),
         ],
       ),
       trailing: Row(
@@ -75,7 +97,9 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
           IconButton(
             icon: const Icon(Icons.cancel),
             color: Colors.red,
-            onPressed: () {},
+            onPressed: () {
+              deleteTask(widget.id);
+            },
           ),
           IconButton(
             icon: const Icon(

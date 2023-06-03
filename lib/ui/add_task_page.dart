@@ -60,7 +60,9 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     ref.watch(importanceProvider);
     ref.watch(typeOfDateProvider);
     ref.watch(categoryProvider);
-    ref.watch(currentTasksProvider);
+    final tasks = ref.watch(currentTasksProvider);
+    final tasksNotifier = ref.watch(currentTasksProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 3,
@@ -395,29 +397,22 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                 child: AnimatedContainer(
                   duration: Duration.zero,
                   child: ElevatedButton(
-                      onPressed: () async {
-                        debugPrint(dateHourController.text);
-
-                        debugPrint(
-                            "Titile Controller: ${titleController.text}");
-                        debugPrint(
-                            "Description Controller: ${descriptionController.text}");
+                      onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           Task _currentTask = Task(
                               title: titleController.text,
-                              description: descriptionController.text.length > 0
+                              description: descriptionController.text.isNotEmpty
                                   ? descriptionController.text
                                   : null,
                               importance:
                                   ref.read(importanceProvider.notifier).state,
                               typeOfDate:
                                   ref.read(typeOfDateProvider.notifier).state,
-                              date: dateHour != null ? dateHour : null,
+                              date: dateHour,
                               category:
                                   ref.read(categoryProvider.notifier).state);
                           addTask(_currentTask);
-                          ref.read(currentTasksProvider.notifier).state =
-                              await getTasks();
+                          tasksNotifier.addTasks(getTasks());
                           router.pop();
                         }
                       },
