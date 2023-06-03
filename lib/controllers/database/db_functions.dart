@@ -10,14 +10,14 @@ void addTask(Task task) {
 List<Task> getTasks() {
   List<Task> listOfTasks = [];
   for (int i = 0; i < tasksBox.length; i++) {
-    listOfTasks.add(tasksBox.get(i));
+    listOfTasks.add(tasksBox.getAt(i));
   }
 
   return listOfTasks;
 }
 
 Task getTask(int id) {
-  return tasksBox.get(id);
+  return tasksBox.getAt(id);
 }
 
 void deleteTask(int id) {

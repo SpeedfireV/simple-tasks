@@ -17,16 +17,20 @@ class Task {
   DateTime? date;
 
   @HiveField(4)
-  int? typeOfDate;
+  DateTime? time;
 
   @HiveField(5)
-  int? category;
+  int typeOfDate;
+
+  @HiveField(6)
+  int category;
 
   Task(
       {required this.title,
       this.description,
       required this.importance,
       this.date,
-      this.typeOfDate,
-      this.category});
+      this.time,
+      required this.typeOfDate,
+      required this.category});
 }
