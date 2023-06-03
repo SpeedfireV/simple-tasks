@@ -7,6 +7,10 @@ void addTask(Task task) {
   tasksBox.add(task);
 }
 
+void editTask(int id, Task task) {
+  tasksBox.putAt(id, task);
+}
+
 List<Task> getTasks() {
   List<Task> listOfTasks = [];
   for (int i = 0; i < tasksBox.length; i++) {

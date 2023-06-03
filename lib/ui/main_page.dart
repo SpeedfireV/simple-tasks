@@ -22,7 +22,6 @@ class _MainPageState extends ConsumerState<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final tasksNotifier = ref.watch(currentTasksProvider.notifier);
     final tasks = ref.watch(currentTasksProvider);
 
     return Scaffold(

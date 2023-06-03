@@ -12,12 +12,12 @@ final currentDatabaseProvider = Provider((ref) => getTasks());
 final currentTasksProvider =
     StateNotifierProvider<TasksNotifier, List<Task>>((ref) {
   final box = ref.watch(currentDatabaseProvider);
-  List<Task> _listOfTasks = [];
+  List<Task> listOfTasks = [];
   for (Task element in box) {
-    _listOfTasks.add(element);
+    listOfTasks.add(element);
   }
 
-  return TasksNotifier(_listOfTasks);
+  return TasksNotifier(listOfTasks);
 });
 
 class TasksNotifier extends StateNotifier<List<Task>> {

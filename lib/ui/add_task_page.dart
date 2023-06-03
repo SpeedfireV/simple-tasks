@@ -9,7 +9,8 @@ import 'package:tasks/main.dart';
 import '../functions/category_icon.dart';
 
 class AddTaskPage extends ConsumerStatefulWidget {
-  const AddTaskPage({super.key});
+  const AddTaskPage({super.key, this.query});
+  final String? query;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddTaskPageState();
@@ -20,6 +21,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
   late FocusNode focusNodeDescription;
   late FocusNode focusNodeDateHour;
   late FocusNode focusNodeCategory;
+
   DateTime? date;
   DateTime? time;
 
@@ -28,7 +30,6 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
   final dateHourController = TextEditingController();
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-  final categoryController = TextEditingController();
 
   @override
   void initState() {
@@ -48,7 +49,6 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     super.dispose();
     titleController.dispose();
     descriptionController.dispose();
-    categoryController.dispose();
     focusNodeTitle.dispose();
     focusNodeDescription.dispose();
     focusNodeDateHour.dispose();
@@ -63,6 +63,23 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     ref.watch(categoryProvider);
     final tasks = ref.watch(currentTasksProvider);
     final tasksNotifier = ref.watch(currentTasksProvider.notifier);
+
+    if (widget.query != null) {
+      Task taskInfo = getTask(int.parse(widget.query!));
+      titleController.text = taskInfo.title;
+
+      if (taskInfo.description != null) {
+        descriptionController.text = taskInfo.description!;
+      }
+      if (taskInfo.date != null) {
+        if (taskInfo.time != null) {
+          dateHourController.text =
+              formatDateTime(date: taskInfo.date!, time: taskInfo.time!);
+        } else {
+          dateHourController.text = formatDateTime(date: taskInfo.date!);
+        }
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -397,7 +414,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                   child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          Task _currentTask = Task(
+                          Task currentTask = Task(
                               title: titleController.text,
                               description: descriptionController.text.isNotEmpty
                                   ? descriptionController.text
@@ -410,7 +427,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                               time: time,
                               category:
                                   ref.read(categoryProvider.notifier).state);
-                          addTask(_currentTask);
+                          addTask(currentTask);
                           tasksNotifier.addTasks(getTasks());
 
                           router.pop();

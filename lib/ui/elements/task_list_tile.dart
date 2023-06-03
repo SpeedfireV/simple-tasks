@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tasks/controllers/database/db_functions.dart';
 import 'package:tasks/controllers/database/task.dart';
 import 'package:tasks/controllers/state_management/task_values.dart';
 import 'package:tasks/functions/category_icon.dart';
@@ -20,8 +19,7 @@ class ListTileTask extends ConsumerStatefulWidget {
 class _ListTileTaskState extends ConsumerState<ListTileTask> {
   @override
   Widget build(BuildContext context) {
-    final tasksNotfier = ref.watch(currentTasksProvider.notifier);
-    final tasks = ref.watch(currentTasksProvider);
+    final tasksNotifier = ref.watch(currentTasksProvider.notifier);
 
     return ListTile(
       subtitle: Text(widget.task.date != null
@@ -31,7 +29,7 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
         showDialog(
             context: context,
             builder: (context) {
-              return TaskDialog(task: widget.task);
+              return TaskDialog(task: widget.task, id: widget.id);
             });
       },
       title: Text(widget.task.title),
@@ -81,11 +79,15 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            icon: const Icon(Icons.cancel),
+            icon: const Icon(Icons.delete),
             color: Colors.red,
             onPressed: () {
-              deleteTask(widget.id);
-              tasksNotfier.addTasks(getTasks());
+              showDialog(
+                  context: context,
+                  builder: (context) => CancelDialog(
+                        tasksNotifier: tasksNotifier,
+                        id: widget.id,
+                      ));
             },
           ),
           IconButton(

@@ -26,7 +26,10 @@ final router = GoRouter(routes: [
   GoRoute(
       path: "/add_task",
       name: "add",
-      builder: (context, state) => const AddTaskPage())
+      builder: (context, state) {
+        final query = state.queryParameters['id'];
+        return AddTaskPage(query: query);
+      })
 ]);
 
 class MyApp extends StatelessWidget {
