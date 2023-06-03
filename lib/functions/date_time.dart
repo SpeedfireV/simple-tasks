@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 
-String formatDateTime(DateTime date, TimeOfDay? time) {
+String dateType(int number) {
+  switch (number) {
+    case 1:
+      return "Until";
+    case 2:
+      return "Since";
+    case 3:
+      return "At";
+    default:
+      return "Until";
+  }
+}
+
+String formatDateTime({required DateTime date, DateTime? time}) {
   DateTime currentDateAndTime = DateTime.now();
+  debugPrint(time.toString());
 
   String text = "";
   String timeString = "";

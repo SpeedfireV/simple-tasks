@@ -20,7 +20,8 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
   late FocusNode focusNodeDescription;
   late FocusNode focusNodeDateHour;
   late FocusNode focusNodeCategory;
-  DateTime? dateHour;
+  DateTime? date;
+  DateTime? time;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -260,21 +261,18 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                               initialTime: TimeOfDay.now(),
                             );
                             if (pickedDate != null) {
+                              date = pickedDate;
+
                               // Set The Date
                               if (pickedTime != null) {
-                                dateHour = DateTime(
-                                    pickedDate.year,
-                                    pickedDate.month,
-                                    pickedDate.day,
-                                    pickedTime.hour,
+                                time = DateTime(0, 0, 0, pickedTime.hour,
                                     pickedTime.minute);
+                                dateHourController.text = formatDateTime(
+                                    date: pickedDate, time: time);
                               } else {
-                                dateHour = DateTime(pickedDate.year,
-                                    pickedDate.month, pickedDate.day);
+                                dateHourController.text =
+                                    formatDateTime(date: pickedDate);
                               }
-
-                              dateHourController.text =
-                                  formatDateTime(pickedDate, pickedTime);
                             }
                           },
                         ),
@@ -408,11 +406,13 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                                   ref.read(importanceProvider.notifier).state,
                               typeOfDate:
                                   ref.read(typeOfDateProvider.notifier).state,
-                              date: dateHour,
+                              date: date,
+                              time: time,
                               category:
                                   ref.read(categoryProvider.notifier).state);
                           addTask(_currentTask);
                           tasksNotifier.addTasks(getTasks());
+
                           router.pop();
                         }
                       },

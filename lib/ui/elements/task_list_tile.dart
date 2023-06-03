@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasks/controllers/database/db_functions.dart';
 import 'package:tasks/controllers/database/task.dart';
+import 'package:tasks/controllers/state_management/task_values.dart';
 import 'package:tasks/functions/category_icon.dart';
 import 'package:tasks/functions/date_time.dart';
+import 'package:tasks/ui/elements/task_dialog.dart';
 
 class ListTileTask extends ConsumerStatefulWidget {
   const ListTileTask({super.key, required this.task, required this.id});
@@ -18,35 +20,18 @@ class ListTileTask extends ConsumerStatefulWidget {
 class _ListTileTaskState extends ConsumerState<ListTileTask> {
   @override
   Widget build(BuildContext context) {
+    final tasksNotfier = ref.watch(currentTasksProvider.notifier);
+    final tasks = ref.watch(currentTasksProvider);
+
     return ListTile(
       subtitle: Text(widget.task.date != null
-          ? formatDateTime(
-              widget.task.date!,
-              TimeOfDay(
-                  hour: widget.task.date!.hour,
-                  minute: widget.task.date!.minute))
+          ? formatDateTime(date: widget.task.date!, time: widget.task.time)
           : ""),
       onTap: () {
         showDialog(
             context: context,
             builder: (context) {
-              return Dialog(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    widget.task.category != null && widget.task.category != 0
-                        ? Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(categoryIcon(widget.task.category!)),
-                              const SizedBox(height: 8)
-                            ],
-                          )
-                        : const SizedBox(),
-                    Text(widget.task.title),
-                  ]),
-                ),
-              );
+              return TaskDialog(task: widget.task);
             });
       },
       title: Text(widget.task.title),
@@ -54,8 +39,8 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 40,
-            height: 40,
+            width: 32,
+            height: 32,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Theme.of(context).colorScheme.inversePrimary),
@@ -70,18 +55,19 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
               ),
             ),
           ),
-          widget.task.category != null && widget.task.category != 0
+          widget.task.category != 0
               ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(width: 8),
                     Container(
-                      width: 40,
-                      height: 40,
+                      width: 32,
+                      height: 32,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Theme.of(context).colorScheme.inversePrimary),
                       child: Icon(
-                        categoryIcon(widget.task.category!),
+                        categoryIcon(widget.task.category),
                         color: Colors.black,
                       ),
                     ),
@@ -99,6 +85,7 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
             color: Colors.red,
             onPressed: () {
               deleteTask(widget.id);
+              tasksNotfier.addTasks(getTasks());
             },
           ),
           IconButton(

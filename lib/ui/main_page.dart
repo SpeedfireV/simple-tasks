@@ -45,7 +45,6 @@ class _MainPageState extends ConsumerState<MainPage> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: tasksBox.length,
                 itemBuilder: (context, index) {
-                  debugPrint(tasksBox.length.toString());
                   return ListTileTask(task: tasks[index], id: index);
                 }),
             const SizedBox(height: 70)
