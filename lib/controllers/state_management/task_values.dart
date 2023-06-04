@@ -3,9 +3,16 @@ import 'package:tasks/controllers/database/db_functions.dart';
 
 import '../database/task.dart';
 
-final importanceProvider = StateProvider.autoDispose((ref) => 3);
-final typeOfDateProvider = StateProvider.autoDispose((ref) => 1);
-final categoryProvider = StateProvider.autoDispose((ref) => 0);
+int? importanceValue;
+int? typeOfDateValue;
+int? categoryValue;
+
+final importanceProvider = StateProvider.autoDispose(
+    (ref) => importanceValue != null ? importanceValue : 3);
+final typeOfDateProvider = StateProvider.autoDispose(
+    (ref) => typeOfDateValue != null ? typeOfDateValue : 1);
+final categoryProvider = StateProvider.autoDispose(
+    (ref) => categoryValue != null ? categoryValue : 0);
 
 final currentDatabaseProvider = Provider((ref) => getTasks());
 

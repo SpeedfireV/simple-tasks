@@ -114,6 +114,9 @@ class TaskDialog extends ConsumerWidget {
           const SizedBox(height: 16),
           TextButton.icon(
             onPressed: () {
+              importanceValue = task.importance;
+              categoryValue = task.category;
+              typeOfDateValue = task.typeOfDate;
               router.pop();
               router.pushNamed("add", queryParameters: {"id": id.toString()});
             },

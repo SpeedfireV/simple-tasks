@@ -24,6 +24,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
 
   DateTime? date;
   DateTime? time;
+  int? importance;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -53,6 +54,9 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     focusNodeDescription.dispose();
     focusNodeDateHour.dispose();
     focusNodeCategory.dispose();
+    importanceValue = null;
+    categoryValue = null;
+    typeOfDateValue = null;
   }
 
   @override
@@ -67,10 +71,12 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     if (widget.query != null) {
       Task taskInfo = getTask(int.parse(widget.query!));
       titleController.text = taskInfo.title;
+      importance = taskInfo.importance;
 
       if (taskInfo.description != null) {
         descriptionController.text = taskInfo.description!;
       }
+
       if (taskInfo.date != null) {
         if (taskInfo.time != null) {
           dateHourController.text =
@@ -114,7 +120,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                     decoration: InputDecoration(
                         prefixIcon: IconButton(
                           icon: Icon(categoryIcon(
-                              ref.read(categoryProvider.notifier).state)),
+                              ref.read(categoryProvider.notifier).state!)),
                           onPressed: () {
                             showModalBottomSheet(
                                 context: context,
@@ -420,13 +426,13 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                                   ? descriptionController.text
                                   : null,
                               importance:
-                                  ref.read(importanceProvider.notifier).state,
+                                  ref.read(importanceProvider.notifier).state!,
                               typeOfDate:
-                                  ref.read(typeOfDateProvider.notifier).state,
+                                  ref.read(typeOfDateProvider.notifier).state!,
                               date: date,
                               time: time,
                               category:
-                                  ref.read(categoryProvider.notifier).state);
+                                  ref.read(categoryProvider.notifier).state!);
 
                           if (widget.query != null) {
                             editTask(int.parse(widget.query!), currentTask);
