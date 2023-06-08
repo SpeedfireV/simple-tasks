@@ -36,8 +36,9 @@ class CancelDialog extends ConsumerWidget {
 
               router.pop();
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Successfully deleted")));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  duration: Duration(milliseconds: 1500),
+                  content: Center(child: Text("Successfully deleted"))));
             },
             child: const Text(
               "Delete task",
@@ -114,6 +115,7 @@ class TaskDialog extends ConsumerWidget {
           const SizedBox(height: 16),
           TextButton.icon(
             onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
               importanceValue = task.importance;
               categoryValue = task.category;
               typeOfDateValue = task.typeOfDate;

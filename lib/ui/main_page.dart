@@ -42,7 +42,7 @@ class _MainPageState extends ConsumerState<MainPage> {
             ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: tasksBox.length,
+                itemCount: tasks.length,
                 itemBuilder: (context, index) {
                   return ListTileTask(task: tasks[index], id: index);
                 }),

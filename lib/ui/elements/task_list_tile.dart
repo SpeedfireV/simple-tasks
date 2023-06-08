@@ -6,6 +6,8 @@ import 'package:tasks/functions/category_icon.dart';
 import 'package:tasks/functions/date_time.dart';
 import 'package:tasks/ui/elements/task_dialog.dart';
 
+import '../../controllers/database/db_functions.dart';
+
 class ListTileTask extends ConsumerStatefulWidget {
   const ListTileTask({super.key, required this.task, required this.id});
 
@@ -22,9 +24,10 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
     final tasksNotifier = ref.watch(currentTasksProvider.notifier);
 
     return ListTile(
-      subtitle: Text(widget.task.date != null
-          ? formatDateTime(date: widget.task.date!, time: widget.task.time)
-          : ""),
+      subtitle: widget.task.date != null
+          ? Text(
+              formatDateTime(date: widget.task.date!, time: widget.task.time))
+          : null,
       onTap: () {
         showDialog(
             context: context,
@@ -46,9 +49,11 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
               child: Text(
                 widget.task.importance.toString(),
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: widget.task.importance > 3
+                      ? FontWeight.w600
+                      : FontWeight.w400,
                 ),
               ),
             ),
@@ -95,7 +100,15 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
               Icons.check,
             ),
             color: Colors.green,
-            onPressed: () {},
+            onPressed: () {
+              deleteTask(widget.id);
+              tasksNotifier.addTasks(getTasks());
+
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  duration: Duration(milliseconds: 1500),
+                  content: Center(child: Text("Congratulations!"))));
+            },
           ),
         ],
       ),

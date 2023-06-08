@@ -1,18 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasks/controllers/database/db_functions.dart';
 
+import '../../functions/tasks_sorting.dart';
 import '../database/task.dart';
 
 int? importanceValue;
 int? typeOfDateValue;
 int? categoryValue;
 
-final importanceProvider = StateProvider.autoDispose(
-    (ref) => importanceValue != null ? importanceValue : 3);
-final typeOfDateProvider = StateProvider.autoDispose(
-    (ref) => typeOfDateValue != null ? typeOfDateValue : 1);
-final categoryProvider = StateProvider.autoDispose(
-    (ref) => categoryValue != null ? categoryValue : 0);
+final importanceProvider =
+    StateProvider.autoDispose((ref) => importanceValue ?? 3);
+final typeOfDateProvider =
+    StateProvider.autoDispose((ref) => typeOfDateValue ?? 1);
+final categoryProvider = StateProvider.autoDispose((ref) => categoryValue ?? 0);
 
 final currentDatabaseProvider = Provider((ref) => getTasks());
 
@@ -30,7 +30,7 @@ final currentTasksProvider =
 class TasksNotifier extends StateNotifier<List<Task>> {
   TasksNotifier(List<Task> initialTasks) : super(initialTasks);
 
-  void addTasks(List<Task> task) {
-    state = task;
+  void addTasks(List<Task> tasks) {
+    state = tasks;
   }
 }

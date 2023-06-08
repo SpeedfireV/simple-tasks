@@ -65,7 +65,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     ref.watch(importanceProvider);
     ref.watch(typeOfDateProvider);
     ref.watch(categoryProvider);
-    final tasks = ref.watch(currentTasksProvider);
+    ref.watch(currentTasksProvider);
     final tasksNotifier = ref.watch(currentTasksProvider.notifier);
 
     if (widget.query != null) {
@@ -81,8 +81,11 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
         if (taskInfo.time != null) {
           dateHourController.text =
               formatDateTime(date: taskInfo.date!, time: taskInfo.time!);
+          date = taskInfo.date!;
+          time = taskInfo.time!;
         } else {
           dateHourController.text = formatDateTime(date: taskInfo.date!);
+          date = taskInfo.date!;
         }
       }
     }
@@ -120,7 +123,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                     decoration: InputDecoration(
                         prefixIcon: IconButton(
                           icon: Icon(categoryIcon(
-                              ref.read(categoryProvider.notifier).state!)),
+                              ref.read(categoryProvider.notifier).state)),
                           onPressed: () {
                             showModalBottomSheet(
                                 context: context,
@@ -426,13 +429,13 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                                   ? descriptionController.text
                                   : null,
                               importance:
-                                  ref.read(importanceProvider.notifier).state!,
+                                  ref.read(importanceProvider.notifier).state,
                               typeOfDate:
-                                  ref.read(typeOfDateProvider.notifier).state!,
+                                  ref.read(typeOfDateProvider.notifier).state,
                               date: date,
                               time: time,
                               category:
-                                  ref.read(categoryProvider.notifier).state!);
+                                  ref.read(categoryProvider.notifier).state);
 
                           if (widget.query != null) {
                             editTask(int.parse(widget.query!), currentTask);
@@ -442,9 +445,14 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                           tasksNotifier.addTasks(getTasks());
 
                           router.pop();
+
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Successfully added")));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              duration: Duration(milliseconds: 1500),
+                              content: Center(
+                                  child: Text(widget.query != null
+                                      ? "Successfully edited"
+                                      : "Successfully added"))));
                         }
                       },
                       style: ElevatedButton.styleFrom(
