@@ -448,7 +448,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
 
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              duration: Duration(milliseconds: 1500),
+                              duration: const Duration(milliseconds: 1500),
                               content: Center(
                                   child: Text(widget.query != null
                                       ? "Successfully edited"

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tasks/controllers/database/db_functions.dart';
 import 'package:tasks/controllers/state_management/task_values.dart';
 import 'package:tasks/main.dart';
 import 'package:tasks/ui/elements/task_list_tile.dart';

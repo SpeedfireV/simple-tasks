@@ -25,6 +25,9 @@ class Task {
   @HiveField(6)
   int category;
 
+  @HiveField(7)
+  int? localId;
+
   Task(
       {required this.title,
       this.description,
@@ -32,5 +35,6 @@ class Task {
       this.date,
       this.time,
       required this.typeOfDate,
-      required this.category});
+      required this.category,
+      this.localId});
 }

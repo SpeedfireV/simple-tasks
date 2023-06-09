@@ -1,10 +1,9 @@
 import 'package:hive_flutter/adapters.dart';
 import 'package:tasks/controllers/database/task.dart';
 
-import '../../functions/tasks_sorting.dart';
-
 late Box tasksBox;
 
+// TODO #1: Local Id
 void addTask(Task task) {
   tasksBox.add(task);
 }
@@ -19,7 +18,7 @@ List<Task> getTasks() {
     listOfTasks.add(tasksBox.getAt(i));
   }
 
-  return sortTasks(listOfTasks);
+  return listOfTasks;
 }
 
 Task getTask(int id) {

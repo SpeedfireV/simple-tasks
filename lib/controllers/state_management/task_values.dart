@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasks/controllers/database/db_functions.dart';
 
-import '../../functions/tasks_sorting.dart';
 import '../database/task.dart';
 
 int? importanceValue;

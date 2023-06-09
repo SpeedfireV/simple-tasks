@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../controllers/database/task.dart';
 
 List<Task> sortTasks(List<Task> tasks) {
@@ -16,7 +14,6 @@ List<Task> sortTasks(List<Task> tasks) {
             insertPosition = 0;
             break;
           }
-          debugPrint(insertPosition.toString() + " Insert Position");
           insertPosition += 1;
         }
       } else {
@@ -29,4 +26,27 @@ List<Task> sortTasks(List<Task> tasks) {
   listOfTasks = includedDate.reversed.toList() + withoutDate;
 
   return listOfTasks;
+}
+
+bool activeTask(Task task) {
+  if (task.date == null) {
+    return false;
+  }
+  DateTime date = task.date!;
+  DateTime? time = task.time;
+  late DateTime dateHour;
+  DateTime now = DateTime.now();
+
+  if (time != null) {
+    dateHour =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  } else {
+    dateHour = DateTime(date.year, date.month, date.day);
+  }
+
+  if (dateHour.compareTo(now) > 0) {
+    return false;
+  } else {
+    return true;
+  }
 }

@@ -4,6 +4,7 @@ import 'package:tasks/controllers/database/task.dart';
 import 'package:tasks/controllers/state_management/task_values.dart';
 import 'package:tasks/functions/category_icon.dart';
 import 'package:tasks/functions/date_time.dart';
+import 'package:tasks/functions/tasks_sorting.dart';
 import 'package:tasks/ui/elements/task_dialog.dart';
 
 import '../../controllers/database/db_functions.dart';
@@ -24,6 +25,7 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
     final tasksNotifier = ref.watch(currentTasksProvider.notifier);
 
     return ListTile(
+      tileColor: activeTask(widget.task) ? Colors.red[100] : Colors.white,
       subtitle: widget.task.date != null
           ? Text(
               formatDateTime(date: widget.task.date!, time: widget.task.time))
