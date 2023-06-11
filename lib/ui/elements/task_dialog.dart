@@ -50,9 +50,11 @@ class CancelDialog extends ConsumerWidget {
 }
 
 class TaskDialog extends ConsumerWidget {
-  const TaskDialog({super.key, required this.task, required this.id});
+  const TaskDialog(
+      {super.key, required this.task, required this.id, this.editDisabled});
   final Task task;
   final int id;
+  final bool? editDisabled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -96,8 +98,12 @@ class TaskDialog extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                          "${dateType(task.typeOfDate)} ${formatDateTime(date: task.date!, time: task.time)}"),
+                      editDisabled == true
+                          ? Text("Done: " +
+                              formatDateTime(
+                                  date: task.doneTime!, time: task.doneTime!))
+                          : Text(
+                              "${dateType(task.typeOfDate)} ${formatDateTime(date: task.date!, time: task.time)}"),
                       Text("Importance: ${task.importance}",
                           style: task.importance > 3
                               ? const TextStyle(fontWeight: FontWeight.w600)
@@ -113,18 +119,21 @@ class TaskDialog extends ConsumerWidget {
                           fontSize: 15,
                         )),
           const SizedBox(height: 16),
-          TextButton.icon(
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              importanceValue = task.importance;
-              categoryValue = task.category;
-              typeOfDateValue = task.typeOfDate;
-              router.pop();
-              router.pushNamed("add", queryParameters: {"id": id.toString()});
-            },
-            label: const Text("Edit"),
-            icon: const Icon(Icons.edit),
-          )
+          editDisabled == true
+              ? SizedBox()
+              : TextButton.icon(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    importanceValue = task.importance;
+                    categoryValue = task.category;
+                    typeOfDateValue = task.typeOfDate;
+                    router.pop();
+                    router.pushNamed("add",
+                        queryParameters: {"id": id.toString()});
+                  },
+                  label: const Text("Edit"),
+                  icon: const Icon(Icons.edit),
+                )
         ]),
       ),
     );

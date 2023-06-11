@@ -2,6 +2,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:tasks/controllers/database/task.dart';
 
 late Box tasksBox;
+late Box archiveBox;
 
 // TODO #1: Local Id
 void addTask(Task task) {
@@ -27,4 +28,17 @@ Task getTask(int id) {
 
 void deleteTask(int id) {
   tasksBox.deleteAt(id);
+}
+
+void addToArchive(Task task) {
+  archiveBox.add(task);
+}
+
+List<Task> getArchives() {
+  List<Task> listOfArchives = [];
+  for (int i = 0; i < archiveBox.length; i++) {
+    listOfArchives.add(archiveBox.getAt(i));
+  }
+
+  return listOfArchives;
 }
