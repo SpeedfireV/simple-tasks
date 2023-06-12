@@ -139,11 +139,9 @@ class DoneListTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      tileColor: activeTask(task) ? Colors.red[100] : Colors.white,
-      subtitle: task.date != null
-          ? Text(
-              "Done: ${formatDateTime(date: task.doneTime!, time: task.doneTime)}")
-          : null,
+      tileColor: Colors.white,
+      subtitle: Text(
+          "Done: ${formatDateTime(date: task.doneTime!, time: task.doneTime)}"),
       onTap: () {
         showDialog(
             context: context,

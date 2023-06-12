@@ -15,7 +15,6 @@ String dateType(int number) {
 
 String formatDateTime({required DateTime date, DateTime? time}) {
   DateTime currentDateAndTime = DateTime.now();
-  debugPrint(time.toString());
 
   String text = "";
   String timeString = "";
