@@ -29,9 +29,8 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
     return ListTile(
       tileColor: activeTask(widget.task) ? Colors.red[100] : Colors.white,
       subtitle: widget.task.date != null
-          ? Text(dateType(widget.task.typeOfDate) +
-              " " +
-              formatDateTime(date: widget.task.date!, time: widget.task.time))
+          ? Text(
+              "${dateType(widget.task.typeOfDate)} ${formatDateTime(date: widget.task.date!, time: widget.task.time)}")
           : null,
       onTap: () {
         showDialog(
@@ -134,8 +133,8 @@ class DoneListTile extends ConsumerWidget {
     return ListTile(
       tileColor: activeTask(task) ? Colors.red[100] : Colors.white,
       subtitle: task.date != null
-          ? Text("Done: " +
-              formatDateTime(date: task.doneTime!, time: task.doneTime))
+          ? Text(
+              "Done: ${formatDateTime(date: task.doneTime!, time: task.doneTime)}")
           : null,
       onTap: () {
         showDialog(

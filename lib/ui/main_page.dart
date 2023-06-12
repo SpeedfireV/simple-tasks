@@ -30,7 +30,9 @@ class _MainPageState extends ConsumerState<MainPage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: archiveActive ? Text("Archives") : Text("Current Tasks"),
+          title: archiveActive
+              ? const Text("Archives")
+              : const Text("Current Tasks"),
           centerTitle: true,
           elevation: 3,
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -70,7 +72,6 @@ class _MainPageState extends ConsumerState<MainPage> {
                       heroTag: "archive",
                       onPressed: () {
                         archiveNotifier.state = !archiveActive;
-                        debugPrint(archiveActive.toString());
                       },
                       child: Icon(archiveNotifier.state
                           ? Icons.inbox_outlined

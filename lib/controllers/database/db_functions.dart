@@ -4,7 +4,6 @@ import 'package:tasks/controllers/database/task.dart';
 late Box tasksBox;
 late Box archiveBox;
 
-// TODO #1: Local Id
 void addTask(Task task) {
   tasksBox.add(task);
 }

@@ -99,9 +99,8 @@ class TaskDialog extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       editDisabled == true
-                          ? Text("Done: " +
-                              formatDateTime(
-                                  date: task.doneTime!, time: task.doneTime!))
+                          ? Text(
+                              "Done: ${formatDateTime(date: task.doneTime!, time: task.doneTime!)}")
                           : Text(
                               "${dateType(task.typeOfDate)} ${formatDateTime(date: task.date!, time: task.time)}"),
                       Text("Importance: ${task.importance}",
@@ -120,7 +119,7 @@ class TaskDialog extends ConsumerWidget {
                         )),
           const SizedBox(height: 16),
           editDisabled == true
-              ? SizedBox()
+              ? const SizedBox()
               : TextButton.icon(
                   onPressed: () {
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
