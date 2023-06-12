@@ -71,7 +71,7 @@ class _MainPageState extends ConsumerState<MainPage> {
                   padding: EdgeInsets.only(
                       bottom:
                           ref.read(buttonsHeight.notifier).state.toDouble()),
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   curve: ref.read(buttonsHeight.notifier).state.toDouble() == 0
                       ? Curves.bounceOut
                       : Curves.ease,
