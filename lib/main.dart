@@ -15,8 +15,8 @@ void main() async {
 
   await Hive.initFlutter().then((value) => debugPrint("Initialized"));
 
-  if (kDebugMode) {
-    print('Debug mode enabled');
+  if (kReleaseMode) {
+    debugPrint = (String? message, {int? wrapWidth}) {};
   }
 
   Hive.registerAdapter(TaskAdapter());

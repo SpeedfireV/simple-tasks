@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasks/controllers/database/db_functions.dart';
 import 'package:tasks/controllers/database/task.dart';
+import 'package:tasks/controllers/state_management/animations.dart';
 import 'package:tasks/controllers/state_management/task_values.dart';
 import 'package:tasks/functions/date_time.dart';
 import 'package:tasks/main.dart';
@@ -66,6 +67,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     ref.watch(typeOfDateProvider);
     ref.watch(categoryProvider);
     ref.watch(currentTasksProvider);
+    final animationsNotifier = ref.watch(buttonsHeight.notifier);
     final tasksNotifier = ref.watch(currentTasksProvider.notifier);
 
     if (widget.query != null) {
@@ -447,12 +449,17 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                           router.pop();
 
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              duration: const Duration(milliseconds: 1500),
-                              content: Center(
-                                  child: Text(widget.query != null
-                                      ? "Successfully edited"
-                                      : "Successfully added"))));
+
+                          animationsNotifier.state = 40;
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(
+                                  duration: const Duration(milliseconds: 1500),
+                                  content: Center(
+                                      child: Text(widget.query != null
+                                          ? "Successfully edited"
+                                          : "Successfully added"))))
+                              .closed
+                              .then((value) => animationsNotifier.state = 0);
                         }
                       },
                       style: ElevatedButton.styleFrom(

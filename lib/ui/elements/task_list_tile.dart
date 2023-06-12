@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasks/controllers/database/task.dart';
+import 'package:tasks/controllers/state_management/animations.dart';
 import 'package:tasks/controllers/state_management/archive.dart';
 import 'package:tasks/controllers/state_management/task_values.dart';
 import 'package:tasks/functions/category_icon.dart';
@@ -25,6 +26,7 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
   Widget build(BuildContext context) {
     final tasksNotifier = ref.watch(currentTasksProvider.notifier);
     final archiveNotifier = ref.watch(currentArchivesProvider.notifier);
+    final animationsNotfier = ref.watch(buttonsHeight.notifier);
 
     return ListTile(
       tileColor: activeTask(widget.task) ? Colors.red[100] : Colors.white,
@@ -112,9 +114,15 @@ class _ListTileTaskState extends ConsumerState<ListTileTask> {
               tasksNotifier.addTasks(getTasks());
 
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  duration: Duration(milliseconds: 1500),
-                  content: Center(child: Text("Congratulations!"))));
+              animationsNotfier.state = 48;
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(const SnackBar(
+                      duration: Duration(milliseconds: 1500),
+                      content: Center(child: Text("Congratulations!"))))
+                  .closed
+                  .then((value) {
+                animationsNotfier.state = 0;
+              });
             },
           ),
         ],

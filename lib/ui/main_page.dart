@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tasks/controllers/state_management/animations.dart';
 import 'package:tasks/controllers/state_management/archive.dart';
 import 'package:tasks/controllers/state_management/task_values.dart';
 import 'package:tasks/main.dart';
@@ -27,6 +28,7 @@ class _MainPageState extends ConsumerState<MainPage> {
     final archiveActive = ref.watch(archiveActiveProvider);
     final archiveNotifier = ref.watch(archiveActiveProvider.notifier);
     final archives = ref.watch(currentArchivesProvider);
+    ref.watch(buttonsHeight);
 
     return Scaffold(
         appBar: AppBar(
@@ -65,27 +67,36 @@ class _MainPageState extends ConsumerState<MainPage> {
               alignment: Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FloatingActionButton(
-                      heroTag: "archive",
-                      onPressed: () {
-                        archiveNotifier.state = !archiveActive;
-                      },
-                      child: Icon(archiveNotifier.state
-                          ? Icons.inbox_outlined
-                          : Icons.inventory_2_outlined),
-                    ),
-                    FloatingActionButton(
-                      heroTag: "newTask",
-                      onPressed: () {
-                        archiveNotifier.state = false;
-                        router.pushNamed("add");
-                      },
-                      child: const Icon(Icons.add),
-                    ),
-                  ],
+                child: AnimatedContainer(
+                  padding: EdgeInsets.only(
+                      bottom:
+                          ref.read(buttonsHeight.notifier).state.toDouble()),
+                  duration: Duration(milliseconds: 300),
+                  curve: ref.read(buttonsHeight.notifier).state.toDouble() == 0
+                      ? Curves.bounceOut
+                      : Curves.ease,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FloatingActionButton(
+                        heroTag: "archive",
+                        onPressed: () {
+                          archiveNotifier.state = !archiveActive;
+                        },
+                        child: Icon(archiveNotifier.state
+                            ? Icons.inbox_outlined
+                            : Icons.inventory_2_outlined),
+                      ),
+                      FloatingActionButton(
+                        heroTag: "newTask",
+                        onPressed: () {
+                          archiveNotifier.state = false;
+                          router.pushNamed("add");
+                        },
+                        child: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )

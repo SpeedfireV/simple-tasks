@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tasks/controllers/state_management/animations.dart';
 import 'package:tasks/controllers/state_management/task_values.dart';
 import 'package:tasks/functions/date_time.dart';
 import 'package:tasks/main.dart';
@@ -16,6 +17,7 @@ class CancelDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final animationsNotifier = ref.watch(buttonsHeight.notifier);
     return AlertDialog(
       icon: const Icon(Icons.delete),
       title: const Text("Delete Task"),
@@ -36,9 +38,13 @@ class CancelDialog extends ConsumerWidget {
 
               router.pop();
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  duration: Duration(milliseconds: 1500),
-                  content: Center(child: Text("Successfully deleted"))));
+              animationsNotifier.state = 48;
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(const SnackBar(
+                      duration: Duration(milliseconds: 1500),
+                      content: Center(child: Text("Successfully deleted"))))
+                  .closed
+                  .then((value) => animationsNotifier.state = 0);
             },
             child: const Text(
               "Delete task",
